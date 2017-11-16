@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Speech Recognition</title>
+		<meta charset="utf-8">
+  	<script src="https://unpkg.com/react@15/dist/react.min.js"></script>
+  	<script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+  	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.0/annyang.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+					integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"> -->
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script src="scripts/artyom.window.js"></script>
+		<script src="scripts/jquery-3.2.1.min.js"></script>
+		<script src="scripts/popper.js"></script>
+		<script src="scripts/tooltip.js"></script>
+  	<link rel="stylesheet" type="text/css" href="styles/game.css">
+
+	</head>
+	<body>
+		<div id="root" className="container"></div>
+		<script type="text/babel">
+
+			const artyom = new Artyom();
+
+			class Introduction extends React.Component{
+				constructor(props){
+					super(props);
+
+					this.state = {gameStarted: false};
+				}
+				startJarvis(event){
+					//alert("startJarvis");
+					// console.log("Hello");
+					// let music = document.getElementById("myAudio");
+					// music.pause();
+
+					artyom.initialize({
+						executionKeyword:"now",
+					    lang:"en-GB",
+						continuous: true,
+					    debug:true, // Show what recognizes in the Console
+					    listen:true, // Start listening after this
+					    speed:0.8, // Talk a little bit slow
+					    mode:"normal" // This parameter is not required as it will be normal by default
+					});
+
+					this.setState({gameStarted: true});
+
+					artyom.say("Hello how are you doing today?",{
+						onStart:function(){
+							artyom.dontObey();
+						}
+					});
+					artyom.say("Hope you have enjoyed the first session.");
+					artyom.say("Do you want to take a break and play a game?");
+					artyom.say("If Yes then respond to me by saying Start the game.",{
+						onEnd:function(){
+							var start = new Date().getTime();
+							var end = start;
+							while(end < start + 1000) {
+								end = new Date().getTime();
+							}
+							artyom.obey();
+						}
+					});
+				}
+				render(){
+
+					if(!this.state.gameStarted){
+						return(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" loop id="myVideo">
+										<source src="video/Introduction.mp4" type="video/mp4" />
+									</video>
+								</div>
+								
+								<button type="button" className="btn btn-primary btn-lg" onClick={this.startJarvis.bind(this)}>Start Game</button>
+							</div>
+
+						);
+					}
+					else{
+						return(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" loop id="myVideo">
+										<source src="video/Introduction.mp4" type="video/mp4" />
+									</video>
+								</div>
+							</div>
+
+						);
+					}
+				}
+			}
+
+			ReactDOM.render(
+				<Introduction/>, document.getElementById("root")
+			);
+
+			let vid = document.getElementById("myVideo");
+			vid.play();
+			// let audio = document.getElementById("myAudio");
+			// audio.play();
+
+			const rules = function(i, command){
+
+					artyom.say("The team has to create a process for giving and receiving the ball.",{
+						lang:"en-GB",
+						onEnd:function(){
+								// artyom.shutUp();
+								var start = new Date().getTime();
+								var end = start;
+								while(end < start + 1000) {
+									end = new Date().getTime();
+								}
+								ReactDOM.render(<h1></h1>, document.getElementById("root"));
+						}
+				});
+
+				artyom.say("The ball should pass through the air.",{
+					lang:"en-US",
+					onStart:function(){
+						ReactDOM.render(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" id="myVideo">
+										<source src="video/Rule1.mp4" type="video/mp4" />
+									</video>
+								</div>
+							</div>,
+							document.getElementById("root")
+					);
+
+					let vid = document.getElementById("myVideo");
+					vid.play();
+
+				},
+				onEnd:function(){
+					var start = new Date().getTime();
+					var end = start;
+					while(end < start + 2000) {
+						end = new Date().getTime();
+					}
+					ReactDOM.render(<h1></h1>, document.getElementById("root"));
+				}
+			});
+
+			artyom.say("You cannot pass the ball to the person adjacent to you.",{
+				lang:"en-GB",
+				onStart:function(){
+					ReactDOM.render(
+						<div>
+							<div className="embed-responsive embed-responsive-21by9">
+								<video className="embed-responsive-item" id="myVideo">
+									<source src="video/Rule2.mp4" type="video/mp4" />
+								</video>
+							</div>
+						</div>,
+						document.getElementById("root")
+					);
+
+					let vid = document.getElementById("myVideo");
+					vid.play();
+
+				},
+				onEnd:function(){
+					var start = new Date().getTime();
+					var end = start;
+					while(end < start + 4000) {
+						end = new Date().getTime();
+					}
+					ReactDOM.render(<h1></h1>, document.getElementById("root"));
+				}
+			});
+
+				artyom.say("If you drop the ball, you must start the round again.",{
+					lang:"en-US",
+					onStart:function(){
+						ReactDOM.render(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" id="myVideo">
+										<source src="video/Rule3.mp4" type="video/mp4" />
+									</video>
+								</div>
+							</div>,
+							document.getElementById("root")
+						);
+
+							let vid = document.getElementById("myVideo");
+							vid.play();
+
+					},
+					onEnd:function(){
+						var start = new Date().getTime();
+						var end = start;
+						while(end < start + 2000) {
+							end = new Date().getTime();
+						}
+						ReactDOM.render(<h1></h1>, document.getElementById("root"));
+					}
+				});
+
+				artyom.say("To complete one cycle, the ball must pass through all the five members, and the ball should reach back to the initiator.",{
+					lang:"en-GB",
+					onStart:function(){
+						ReactDOM.render(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" id="myVideo">
+										<source src="video/Rule4_new.mp4" type="video/mp4" />
+									</video>
+								</div>
+							</div>,
+							document.getElementById("root")
+						);
+
+						let vid = document.getElementById("myVideo");
+						vid.play();
+
+					},
+					onEnd:function(){
+						var start = new Date().getTime();
+						var end = start;
+						while(end < start + 3000) {
+							end = new Date().getTime();
+						}
+						ReactDOM.render(<h1></h1>, document.getElementById("root"));
+					}
+				});
+
+				artyom.say("Two consecutive cycle in quick succession is equal to one product. You can however change the sequence between cycles.",{
+					lang:"en-GB",
+					onStart:function(){
+						ReactDOM.render(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" id="myVideo">
+										<source src="video/Rule6.mp4" type="video/mp4" />
+									</video>
+								</div>
+							</div>,
+							document.getElementById("root")
+						);
+
+						let vid = document.getElementById("myVideo");
+						vid.play();
+
+					},
+					onEnd:function(){
+						var start = new Date().getTime();
+						var end = start;
+						while(end < start + 3000) {
+							end = new Date().getTime();
+						}
+						ReactDOM.render(<h1></h1>, document.getElementById("root"));
+					}
+				});
+
+				artyom.say("The assistants will be recording the time you are taking to complete the game.",{
+					lang:"en-US",
+					onStart:function(){
+						ReactDOM.render(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" id="myVideo">
+										<source src="video/Rule7.mp4" type="video/mp4" />
+									</video>
+								</div>
+							</div>,
+							document.getElementById("root")
+						);
+
+						let vid = document.getElementById("myVideo");
+						vid.play();
+
+					},
+					onEnd:function(){
+						var start = new Date().getTime();
+						var end = start;
+						while(end < start + 1000) {
+							end = new Date().getTime();
+						}
+
+						ReactDOM.render(<h1></h1>, document.getElementById("root"));
+					}
+				});
+
+
+					artyom.say("Do you want me to repeat the rules again ? If you want please answer with Repeat Rules.",{
+						lang:"en-US",
+						onStart:function(){
+							
+							ReactDOM.render(
+								<div>
+									<div className="embed-responsive embed-responsive-21by9">
+										<video className="embed-responsive-item" loop id="myVideo">
+											<source src="video/filler.mp4" type="video/mp4" />
+										</video>
+									</div>
+								</div>,
+								document.getElementById("root")
+							);
+
+							let vid = document.getElementById("myVideo");
+							vid.play();
+						}
+					});
+					artyom.say("Otherwise respond by saying Play Game.",{
+						onEnd:function(){
+							var start = new Date().getTime();
+							var end = start;
+							while(end < start + 1000) {
+								end = new Date().getTime();
+							}
+							artyom.obey();
+						}
+					});
+			}
+
+		artyom.addCommands([
+			{
+				indexes: ["start the game"],
+				action: function(i){
+					artyom.say("Okay. Let's start playing the game.");
+					artyom.say("This game will need five players.",{
+						onStart:function(){
+							artyom.dontObey();
+							ReactDOM.render(<h1></h1>,document.getElementById("root"));
+							
+							ReactDOM.render(
+								<div>
+									<div className="embed-responsive embed-responsive-21by9">
+										<video className="embed-responsive-item" loop id="myVideo">
+											<source src="video/filler.mp4" type="video/mp4" />
+										</video>
+									</div>
+								</div>,
+								document.getElementById("root")
+							);
+
+							let vid = document.getElementById("myVideo");
+							vid.play();
+
+//							artyom.dontObey();
+						}
+					});
+					artyom.say("I will now request the assistants to hand over a ball to the team.");
+					artyom.say("Team, once the ball has been handed over to you, let the assistants know that you are ready.",{
+						onEnd:function(){
+							var start = new Date().getTime();
+							var end = start;
+							while(end < start + 3000) {
+								end = new Date().getTime();
+							}
+							artyom.obey();
+						}
+					});
+				}
+			},
+			{
+				indexes: ["ready for the game"],
+				action: function(i){
+					artyom.say("Great, so now I will let you know about the rules of the game.",{
+						onStart:function(){
+							artyom.dontObey();
+						}
+					});
+
+					rules(i, "donot repeat");
+				}
+			},
+			{
+				indexes: ["repeat"],
+				action: function(i){
+					artyom.say("Ok. I will repeat the rules again.",{
+						onStart:function(){
+							ReactDOM.render(<h1></h1>,document.getElementById("root"));
+							
+							ReactDOM.render(
+								<div>
+									<div className="embed-responsive embed-responsive-21by9">
+										<video className="embed-responsive-item" loop id="myVideo">
+											<source src="video/filler.mp4" type="video/mp4" />
+										</video>
+									</div>
+								</div>,
+								document.getElementById("root")
+							);
+
+							let vid = document.getElementById("myVideo");
+							vid.play();
+
+							artyom.dontObey();
+						}
+					});
+
+					rules(i, "repeat");
+
+				}
+			},
+			{
+				indexes: ["play game"],
+				action: function(i){
+					
+					artyom.say("Okay. Once you are done, respond to me by saying the score",{
+						onStart:function(){
+							artyom.dontObey();
+
+							ReactDOM.render(<h1></h1>,document.getElementById("root"));
+
+							ReactDOM.render(<img src="images/GameOn.jpg" style={{ height: '600px', width: '100%' }}/>,
+								document.getElementById("root")
+							);
+						},
+						onEnd:function(){
+							var start = new Date().getTime();
+							var end = start;
+							while(end < start + 1000) {
+								end = new Date().getTime();
+							}
+							artyom.obey();
+						}
+					});
+
+				}
+			},
+			{
+				smart: true,
+				indexes: ["time *"],
+				action: function(i, wildcard){
+
+					ReactDOM.render(<h1></h1>,document.getElementById("root"));
+
+						ReactDOM.render(
+							<div>
+								<div className="embed-responsive embed-responsive-21by9">
+									<video className="embed-responsive-item" id="myVideo">
+										<source src="video/Introduction.mp4" type="video/mp4" />
+									</video>
+								</div>
+							</div>,
+								document.getElementById("root")
+						);
+
+						let vid = document.getElementById("myVideo");
+						vid.play();
+
+						let time = parseFloat(wildcard);
+					if(isNaN(time)){
+						//artyom.say("Can you please repeat the score?");
+						artyom.say("My data analysis states that your time was excellent. Great job.");
+						artyom.say("I just wanted you to think about identifying the wastes in your process.",{
+						onStart:function(){
+							ReactDOM.render(<h1></h1>,document.getElementById("root"));
+							ReactDOM.render(
+								<div>
+									<div className="embed-responsive embed-responsive-21by9">
+										<video className="embed-responsive-item" id="myVideo">
+											<source src="video/game.mp4" type="video/mp4" />
+										</video>
+									</div>
+								</div>,
+								document.getElementById("root")
+							);
+
+							let vid = document.getElementById("myVideo");
+							vid.play();
+						}
+					});
+					artyom.say("For example in our game, the longer the ball stays in air or the further it travels are wastes in the system.");
+					artyom.say("The mantra is 'Increase the speed, reduce the distance'. That will bring down the cycle time.");
+					artyom.say("I will leave you with a thought. Look at your processes, think creatively and improve continuously.");
+					artyom.say("Its amazing what you can achieve when you put your creative mind to it.",{
+						onEnd:function(){
+							var start = new Date().getTime();
+							var end = start;
+							while(end < start + 2000) {
+								end = new Date().getTime();
+							}
+							artyom.obey();
+						}
+					});
+
+					artyom.say("Thank you and have a great day ahead.",{
+						onStart:function(){
+							ReactDOM.render(
+								<div className="row"  id="thanks">
+									<div className="col align-self-center">
+										<h1 className="display-4">Thank You!</h1>
+									</div>
+								</div>,
+								document.getElementById("root")
+							);
+						}
+					});
+					}
+					else{
+
+
+					artyom.say("That was great! Let me dig into my history and find out how it compares with other timings.",{
+						onStart:function(){
+							artyom.dontObey();
+						}
+					});
+					
+
+
+					if(time > 1.6){
+						artyom.say("My data analysis states that your time was good but it could have been better. Here are some of the previous scores.",{
+							onStart:function(){
+								ReactDOM.render(
+									<div className="row">
+										<div className="col align-self-center">
+											<h1 className="display-4">Your Score: {time} Seconds</h1>
+											<h2>Previous Best Scores:</h2>
+											<ul className="list-group">
+												<li style={{fontSize: '30px'}} className="list-group-item"><i className="material-icons">grade</i> 1.6 Seconds</li>
+												<li style={{fontSize: '30px'}} className="list-group-item"><i className="material-icons">grade</i> 2.1 Seconds</li>
+												<li style={{fontSize: '30px'}} className="list-group-item"><i className="material-icons">grade</i> 2.8 Seconds</li>
+											</ul>
+										</div>
+									</div>,
+									document.getElementById("root")
+								);
+							}
+						});
+					}
+					else{
+						artyom.say("My data analysis states that your time was excellent. Great job. Here are some of the previous scores.",{
+							onStart:function(){
+								ReactDOM.render(
+									<div className="row">
+										<div className="col align-self-center">
+											<h1 className="display-4">Your Score: {time} Seconds</h1>
+											<h2>Previous Best Scores:</h2>
+											<ul className="list-group">
+												<li style={{fontSize: '30px'}} className="list-group-item"><i className="material-icons">grade</i> 1.6 Seconds</li>
+												<li style={{fontSize: '30px'}} className="list-group-item"><i className="material-icons">grade</i> 2.1 Seconds</li>
+												<li style={{fontSize: '30px'}} className="list-group-item"><i className="material-icons">grade</i> 2.8 Seconds</li>
+											</ul>
+										</div>
+									</div>,
+									document.getElementById("root")
+								);
+							}
+						});
+					}
+
+					artyom.say("I just wanted you to think about identifying the wastes in your process.",{
+						onStart:function(){
+							ReactDOM.render(
+								<div>
+									<div className="embed-responsive embed-responsive-21by9">
+										<video className="embed-responsive-item" id="myVideo">
+											<source src="video/game.mp4" type="video/mp4" />
+										</video>
+									</div>
+								</div>,
+								document.getElementById("root")
+							);
+
+							let vid = document.getElementById("myVideo");
+							vid.play();
+						}
+					});
+					artyom.say("For example in our game, the longer the ball stays in air or the further it travels are wastes in the system.");
+					artyom.say("The mantra is 'Increase the speed, reduce the distance'. That will bring down the cycle time.");
+					artyom.say("I will leave you with a thought. Look at your processes, think creatively and improve continuously.");
+					artyom.say("Its amazing what you can achieve when you put your creative mind to it.",{
+						onEnd:function(){
+							var start = new Date().getTime();
+							var end = start;
+							while(end < start + 2000) {
+								end = new Date().getTime();
+							}
+							artyom.obey();
+						}
+					});
+
+					artyom.say("Thank you and have a great day ahead.",{
+						onStart:function(){
+							ReactDOM.render(
+								<div className="row"  id="thanks">
+									<div className="col align-self-center">
+										<h1 className="display-4">Thank You!</h1>
+									</div>
+								</div>,
+								document.getElementById("root")
+							);
+						}
+					});
+				}
+
+
+				}
+			},
+			{
+				indexes: ["end", "shutdown"],
+				action: function(i){
+					artyom.shutUp();
+				}
+			}
+		]);
+
+		artyom.redirectRecognizedTextOutput(function(text, isFinal){
+			if(isFinal){
+				console.log(text);
+			}
+		});
+
+	</script>
+	</body>
+</html>
